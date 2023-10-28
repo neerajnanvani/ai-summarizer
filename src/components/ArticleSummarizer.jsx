@@ -2,16 +2,25 @@ import { useEffect, useState } from "react";
 import {copy, linkIcon, loader, tick } from "../assets";
 import { useLazyGetSummaryQuery } from "../services/article";
 
-const Demo = () => {
+const ArticleSummarizer = () => {
 
+  // ALL REACTIVE DATA
   const [article, setArticle] = useState({
     url: "",
     summary: ""
   });
+
   const [allArticles, setAllArticles] = useState([]);
+
+  const [getSummary, {error, isFetching}] = useLazyGetSummaryQuery();
+  
   const [copiedURL, setCopiedURL] = useState("");
 
+
+  // use effect run on mounted of component
   useEffect(() => {    
+
+    // load early loaded articles
     const articlesOfLocalStorage = JSON.parse(localStorage.getItem('articles'));
 
     if(articlesOfLocalStorage) {
@@ -19,6 +28,11 @@ const Demo = () => {
     }
   }, []);
 
+  /**
+   * Method to copy the url and perform other actions related to it
+   * 
+   * @param {string} url - The url needs to copy
+   */
   const copyUrl = (url) => {
     navigator.clipboard.writeText(url);
     setCopiedURL(url);
@@ -28,8 +42,11 @@ const Demo = () => {
     }, 4000);
   }  
 
-  const [getSummary, {error, isFetching}] = useLazyGetSummaryQuery();
-
+  /**
+   * Method to submit url to call API and update all articles
+   * 
+   * @param {Event} e - the form submit event
+   */
   const submitURL = async(e) => {
     e.preventDefault();
     const {data} = await getSummary({articleUrl: article.url});
@@ -119,6 +136,8 @@ const Demo = () => {
         ) :
           error ? (
             <p className="font-inter font-bold text-black text-center">
+              
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               Well, that wasn't suppose to happen
               <br />
               <span className="font-satoshi font-normal text-gray-700">
@@ -146,4 +165,4 @@ const Demo = () => {
   )
 }
 
-export default Demo
+export default ArticleSummarizer;

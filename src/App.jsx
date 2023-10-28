@@ -1,5 +1,5 @@
 import Hero from "./components/Hero";
-import Demo from "./components/Demo";
+import ArticleSummarizer from "./components/ArticleSummarizer";
 import "./App.css"
 
 const App = () => {
@@ -11,10 +11,10 @@ const App = () => {
 
     <div className="app">
         <Hero />
-        <Demo />
+        <ArticleSummarizer />
     </div>
    </main>
   )
 }
 
-export default App
+export default App;
